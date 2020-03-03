@@ -1,20 +1,21 @@
 import java.util.*;
 
 public class Collections {
-    static int maxNum = 0;
-    static int UniqueNumbers = 0;
+    static int maxNum;
 
-    public static int maxUniqueNumber(int intNumber, int subArraySize, int[] arr) {
-
-        for (int x = 0; x < intNumber - subArraySize; x++) {
-            UniqueNumbers = 0;
-            HashMap<Integer, Integer> map = new HashMap<>();
+    public static int maxUniqueNumber(int subArraySize, int[] arr) {
+        maxNum = 0;
+        Deque<Object> queue = new ArrayDeque<>();
+        for (int x = 0; x <= arr.length - 1; x++) queue.add(arr[x]);
+        HashSet<Integer> hashSet = new HashSet<>();
+        for (int x = 0; x < arr.length - subArraySize; x++) {
+            Object[] temp = queue.toArray();
             for (int i = 0; i < subArraySize; i++) {
-                if (!map.containsKey(arr[i + x])) {
-                    map.put(arr[i + x], ++UniqueNumbers);
-                }
+                hashSet.add((Integer) temp[i]);
             }
-            if (UniqueNumbers > maxNum) maxNum = UniqueNumbers;
+            queue.remove();
+            if (hashSet.size() > maxNum) maxNum = hashSet.size();
+            hashSet.clear();
         }
         return maxNum;
     }
